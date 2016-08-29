@@ -45,10 +45,10 @@ void MainWindow::viewCenter()
 
     qDebug() << tableModel->query().lastQuery();
 
-//    tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
-//    tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
-//    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
-//    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Last Update"));
+    tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
+    tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
+    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
+    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Last Update"));
 
 
     ui->tableView->setModel(tableModel);
