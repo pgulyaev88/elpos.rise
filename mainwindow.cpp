@@ -48,7 +48,7 @@ void MainWindow::viewCenter()
     tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
-    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Last Update"));
+    tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
 
 
     ui->tableView->setModel(tableModel);
@@ -64,6 +64,30 @@ void MainWindow::viewCenter()
 
 void MainWindow::editFilial()
 {
+    QSqlDatabase::database();
+    QSqlRelationalTableModel *tableModel = new QSqlRelationalTableModel;
+    tableModel->setTable("rise");
+    tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tableModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
+    tableModel->setRelation(1,QSqlRelation("menu","menuId","menuName"));
+    tableModel->setRelation(2,QSqlRelation("users","userId","userName"));
+    tableModel->select();
+
+    qDebug() << tableModel->query().lastQuery();
+
+    tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
+    tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
+    tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
+    tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
+
+    ui->tableView->setModel(tableModel);
+    ui->tableView->verticalHeader()->hide();
+    ui->tableView->setColumnHidden(0,true);
+    ui->tableView->setColumnHidden(4,true);
+    ui->tableView->setColumnHidden(5,true);
+    ui->tableView->setColumnHidden(7,true);
+    qDebug() << QObject::trUtf8("Filial Open UI");
+
 
 }
 
