@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dbcon(dataBaseName,dataBaseHost,dataBaseUserName,dataBaseUserPassword);
 
 
-    if(isCenter == 0){
+    if(isCenter != 0){
         editFilial();
     } else {
         viewCenter();
@@ -43,7 +43,7 @@ void MainWindow::viewCenter()
     tableModel->setRelation(2,QSqlRelation("users","userId","userName"));
     tableModel->select();
 
-    qDebug() << tableModel->query().lastQuery();
+
 
     tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
@@ -58,6 +58,7 @@ void MainWindow::viewCenter()
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    qDebug() << tableModel->query().lastQuery();
     qDebug() << QObject::trUtf8("Center Open UI");
 
 }
@@ -67,13 +68,15 @@ void MainWindow::editFilial()
     QSqlDatabase::database();
     QSqlRelationalTableModel *tableModel = new QSqlRelationalTableModel;
     tableModel->setTable("rise");
-    tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     tableModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
     tableModel->setRelation(1,QSqlRelation("menu","menuId","menuName"));
     tableModel->setRelation(2,QSqlRelation("users","userId","userName"));
+    /* restId == userId */
+    QString dataFilter = QString("%1'%2'").arg("rise.archive=false AND rise.userId=").arg(restId);
+    tableModel->setFilter(dataFilter);
     tableModel->select();
 
-    qDebug() << tableModel->query().lastQuery();
 
     tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
@@ -86,6 +89,8 @@ void MainWindow::editFilial()
     ui->tableView->setColumnHidden(4,true);
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
+    qDebug() << tableModel->query().lastQuery();
+
     qDebug() << QObject::trUtf8("Filial Open UI");
 
 
@@ -121,9 +126,9 @@ void MainWindow::getsettings()
             qDebug() << "dataBaseUserPassword:" << dataBaseUserPassword;
 
 
-            restId = settings->value("restaurant/id").toInt();
-            if(settings->value("restaurant/id").isNull()){
-               settings->setValue("restaurant/id",0);
+            restId = settings->value("restaurant/restId").toInt();
+            if(settings->value("restaurant/restId").isNull()){
+               settings->setValue("restaurant/restId",0);
             }
             qDebug() << "Restaurant ID:" << restId;
 
@@ -151,4 +156,14 @@ void MainWindow::dbcon(QString dataBaseName, QString dataBaseHost, QString dataB
             if (!db.open()){
                 qDebug() << QObject::trUtf8("Database error connect") << db.lastError().text();
             }
+}
+
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    if(event->timerId() == timerPrepare->timerId()){
+            ++step;
+//            updateData();
+    } else {
+            QObject::timerEvent(event);
+    }
 }

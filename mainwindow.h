@@ -35,6 +35,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString restName;
+    /* restId == userId */
     int restId;
     int dishCode;
     QString dishName;
@@ -46,7 +47,11 @@ private:
     QString fileName;
     QString isAdmin;
     QString isCenter;
+    QTimer *timerPrepare;
+    int step;
 
+protected:
+    void timerEvent(QTimerEvent *event);
 
 };
 
