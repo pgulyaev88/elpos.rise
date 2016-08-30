@@ -45,12 +45,9 @@ querys varchar(255);
 
 BEGIN
 IF TG_OP = 'UPDATE' THEN
-UPDATE rise SET archive=true,archivedatetime=NOW();
-INSERT INTO rise(
-            riseid, menuid, userid, count, archive, archivedatetime, lastupdate,
-            deleted)
-    VALUES (nextval('"rise_riseId_seq"'::regclass), NEW.menuid, NEW.userid, NEW.count, NULL, NULL,
-        NOW(),false);
+UPDATE rise SET lastupdate=NOW();
+INSERT INTO rise(riseid, menuid, userid, count, archive, archivedatetime, lastupdate,deleted)
+    VALUES (nextval('"rise_riseId_seq"'::regclass), OLD.menuid, OLD.userid, OLD.count, true, NOW(),NULL,false);
 RETURN NEW;
 END IF;
 END;$$;
