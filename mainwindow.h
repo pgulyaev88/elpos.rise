@@ -22,11 +22,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void viewCenter();
-    void editFilial();
+
 
 public slots:
     void getsettings();
+    void viewCenter();
+    void editFilial();
+    void startCenter();
+    void startFilial();
 
 private slots:
     void dbcon(QString dataBaseName, QString dataBaseHost, QString dataBaseUserName, QString dataBaseUserPassword);
@@ -47,8 +50,9 @@ private:
     QString fileName;
     QString isAdmin;
     QString isCenter;
-    QTimer *timerPrepare;
+    QTimer *timerRise;
     int step;
+    int timerMilliSeconds;
 
 protected:
     void timerEvent(QTimerEvent *event);

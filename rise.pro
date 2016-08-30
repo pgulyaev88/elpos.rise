@@ -20,4 +20,7 @@ HEADERS  += mainwindow.h
 FORMS    += mainwindow.ui
 
 DISTFILES += \
-    SQL/base.sql
+    SQL/base.sql \
+    rise_ru.ts
+
+TRANSLATIONS += rise_ru.ts

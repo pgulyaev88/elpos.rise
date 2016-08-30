@@ -17,11 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     getsettings();
     dbcon(dataBaseName,dataBaseHost,dataBaseUserName,dataBaseUserPassword);
 
-
     if(isCenter != 0){
-        editFilial();
+        startFilial();
     } else {
-        viewCenter();
+        startCenter();
     }
 
 
@@ -96,6 +95,27 @@ void MainWindow::editFilial()
 
 }
 
+void MainWindow::startCenter()
+{
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(viewCenter()));
+    timerRise = new QTimer(this);
+    connect(timerRise, SIGNAL(timeout()),this,SLOT(viewCenter()));
+    timerRise->setInterval(timerMilliSeconds);
+    timerRise->start();
+
+
+}
+
+void MainWindow::startFilial()
+{
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(editFilial()));
+    timerRise = new QTimer(this);
+    connect(timerRise, SIGNAL(timeout()),this,SLOT(editFilial()));
+    timerRise->setInterval(timerMilliSeconds);
+    timerRise->start();
+}
+
+
 void MainWindow::getsettings()
 {
             QString fileName = "./param.ini";
@@ -144,6 +164,12 @@ void MainWindow::getsettings()
             }
             qDebug() << "isCenter:" << isCenter;
 
+            timerMilliSeconds = settings->value("restaurant/timerMilliSeconds").toInt();
+            if(settings->value("restaurant/timerMilliSeconds").isNull()){
+                settings->setValue("restaurant/timerMilliSeconds",15000);
+            }
+            qDebug() << "timerMilliSeconds:" << timerMilliSeconds;
+
 }
 
 void MainWindow::dbcon(QString dataBaseName, QString dataBaseHost, QString dataBaseUserName, QString dataBaseUserPassword)
@@ -160,9 +186,13 @@ void MainWindow::dbcon(QString dataBaseName, QString dataBaseHost, QString dataB
 
 void MainWindow::timerEvent(QTimerEvent *event)
 {
-    if(event->timerId() == timerPrepare->timerId()){
+    if(event->timerId() == timerRise->timerId()){
             ++step;
-//            updateData();
+           if(isCenter != 0){
+              editFilial();
+           } else {
+              viewCenter();
+           }
     } else {
             QObject::timerEvent(event);
     }

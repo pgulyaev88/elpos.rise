@@ -6,39 +6,64 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1229</width>
-    <height>651</height>
+    <width>1193</width>
+    <height>697</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>1211</width>
-      <height>571</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
-     </property>
-     <item row="0" column="0">
-      <widget class="QTableView" name="tableView"/>
-     </item>
-    </layout>
-   </widget>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1920</width>
+     <height>1080</height>
+    </size>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>PushButton</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QTableView" name="tableView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1229</width>
+     <width>1193</width>
      <height>21</height>
     </rect>
    </property>
