@@ -47,7 +47,7 @@ BEGIN
 IF TG_OP = 'UPDATE' THEN
 UPDATE rise SET lastupdate=NOW();
 INSERT INTO rise(riseid, menuid, userid, count, archive, archivedatetime, lastupdate,deleted)
-    VALUES (nextval('"rise_riseId_seq"'::regclass), OLD.menuid, OLD.userid, OLD.count, true, NOW(),NULL,false);
+    VALUES (nextval('"rise_riseid_seq"'::regclass), OLD.menuid, OLD.userid, OLD.count, true, NOW(),NULL,false);
 RETURN NEW;
 END IF;
 END;$$;
@@ -73,10 +73,10 @@ CREATE TABLE menu (
 ALTER TABLE menu OWNER TO rise;
 
 --
--- Name: menu_menuId_seq; Type: SEQUENCE; Schema: public; Owner: rise
+-- Name: menu_menuid_seq; Type: SEQUENCE; Schema: public; Owner: rise
 --
 
-CREATE SEQUENCE "menu_menuId_seq"
+CREATE SEQUENCE menu_menuid_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -84,13 +84,13 @@ CREATE SEQUENCE "menu_menuId_seq"
     CACHE 1;
 
 
-ALTER TABLE "menu_menuId_seq" OWNER TO rise;
+ALTER TABLE menu_menuid_seq OWNER TO rise;
 
 --
--- Name: menu_menuId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
+-- Name: menu_menuid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
 --
 
-ALTER SEQUENCE "menu_menuId_seq" OWNED BY menu.menuid;
+ALTER SEQUENCE menu_menuid_seq OWNED BY menu.menuid;
 
 
 --
@@ -102,20 +102,20 @@ CREATE TABLE rise (
     menuid integer,
     userid integer,
     count numeric(5,2),
-    archive boolean,
+    archive boolean DEFAULT false,
     archivedatetime timestamp without time zone,
     lastupdate timestamp without time zone,
-    deleted boolean
+    deleted boolean DEFAULT false
 );
 
 
 ALTER TABLE rise OWNER TO rise;
 
 --
--- Name: rise_riseId_seq; Type: SEQUENCE; Schema: public; Owner: rise
+-- Name: rise_riseid_seq; Type: SEQUENCE; Schema: public; Owner: rise
 --
 
-CREATE SEQUENCE "rise_riseId_seq"
+CREATE SEQUENCE rise_riseid_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -123,13 +123,13 @@ CREATE SEQUENCE "rise_riseId_seq"
     CACHE 1;
 
 
-ALTER TABLE "rise_riseId_seq" OWNER TO rise;
+ALTER TABLE rise_riseid_seq OWNER TO rise;
 
 --
--- Name: rise_riseId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
+-- Name: rise_riseid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
 --
 
-ALTER SEQUENCE "rise_riseId_seq" OWNED BY rise.riseid;
+ALTER SEQUENCE rise_riseid_seq OWNED BY rise.riseid;
 
 
 --
@@ -146,10 +146,10 @@ CREATE TABLE users (
 ALTER TABLE users OWNER TO rise;
 
 --
--- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: rise
+-- Name: users_userid_seq; Type: SEQUENCE; Schema: public; Owner: rise
 --
 
-CREATE SEQUENCE "users_userId_seq"
+CREATE SEQUENCE users_userid_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -157,34 +157,34 @@ CREATE SEQUENCE "users_userId_seq"
     CACHE 1;
 
 
-ALTER TABLE "users_userId_seq" OWNER TO rise;
+ALTER TABLE users_userid_seq OWNER TO rise;
 
 --
--- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
+-- Name: users_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rise
 --
 
-ALTER SEQUENCE "users_userId_seq" OWNED BY users.userid;
+ALTER SEQUENCE users_userid_seq OWNED BY users.userid;
 
 
 --
 -- Name: menuid; Type: DEFAULT; Schema: public; Owner: rise
 --
 
-ALTER TABLE ONLY menu ALTER COLUMN menuid SET DEFAULT nextval('"menu_menuId_seq"'::regclass);
+ALTER TABLE ONLY menu ALTER COLUMN menuid SET DEFAULT nextval('menu_menuid_seq'::regclass);
 
 
 --
 -- Name: riseid; Type: DEFAULT; Schema: public; Owner: rise
 --
 
-ALTER TABLE ONLY rise ALTER COLUMN riseid SET DEFAULT nextval('"rise_riseId_seq"'::regclass);
+ALTER TABLE ONLY rise ALTER COLUMN riseid SET DEFAULT nextval('rise_riseid_seq'::regclass);
 
 
 --
 -- Name: userid; Type: DEFAULT; Schema: public; Owner: rise
 --
 
-ALTER TABLE ONLY users ALTER COLUMN userid SET DEFAULT nextval('"users_userId_seq"'::regclass);
+ALTER TABLE ONLY users ALTER COLUMN userid SET DEFAULT nextval('users_userid_seq'::regclass);
 
 
 --

@@ -48,8 +48,8 @@ private:
     QString dataBaseUserName;
     QString dataBaseUserPassword;
     QString fileName;
-    QString isAdmin;
-    QString isCenter;
+    int isAdmin;
+    int isCenter;
     QTimer *timerRise;
     int step;
     int timerMilliSeconds;

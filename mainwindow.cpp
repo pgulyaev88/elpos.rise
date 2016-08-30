@@ -17,10 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     getsettings();
     dbcon(dataBaseName,dataBaseHost,dataBaseUserName,dataBaseUserPassword);
 
-    if(isCenter != 0){
-        startFilial();
+    if(isCenter == 0){
+//        startFilial();
+        connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(editFilial()));
+        editFilial();
+        qDebug() << QObject::trUtf8("MainWindow Start Filial") << isCenter;
     } else {
         startCenter();
+        qDebug() << QObject::trUtf8("MainWindow Start Center") << isCenter;
     }
 
 
@@ -36,10 +40,10 @@ void MainWindow::viewCenter()
     QSqlDatabase::database();
     QSqlRelationalTableModel *tableModel = new QSqlRelationalTableModel;
     tableModel->setTable("rise");
-    tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     tableModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
-    tableModel->setRelation(1,QSqlRelation("menu","menuId","menuName"));
-    tableModel->setRelation(2,QSqlRelation("users","userId","userName"));
+    tableModel->setRelation(1,QSqlRelation("menu","menuid","menuname"));
+    tableModel->setRelation(2,QSqlRelation("users","userid","username"));
     tableModel->select();
 
 
@@ -69,10 +73,10 @@ void MainWindow::editFilial()
     tableModel->setTable("rise");
     tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     tableModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
-    tableModel->setRelation(1,QSqlRelation("menu","menuId","menuName"));
-    tableModel->setRelation(2,QSqlRelation("users","userId","userName"));
+    tableModel->setRelation(1,QSqlRelation("menu","menuid","menuname"));
+    tableModel->setRelation(2,QSqlRelation("users","userid","username"));
     /* restId == userId */
-    QString dataFilter = QString("%1'%2'").arg("rise.archive=false AND rise.userId=").arg(restId);
+    QString dataFilter = QString("%1'%2'").arg("rise.archive=false AND rise.userid=").arg(restId);
     tableModel->setFilter(dataFilter);
     tableModel->select();
 
@@ -88,6 +92,7 @@ void MainWindow::editFilial()
     ui->tableView->setColumnHidden(4,true);
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
+    ui->tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
     qDebug() << tableModel->query().lastQuery();
 
     qDebug() << QObject::trUtf8("Filial Open UI");
@@ -102,6 +107,7 @@ void MainWindow::startCenter()
     connect(timerRise, SIGNAL(timeout()),this,SLOT(viewCenter()));
     timerRise->setInterval(timerMilliSeconds);
     timerRise->start();
+    qDebug() << QObject::trUtf8("Start Center Timer");
 
 
 }
@@ -112,7 +118,8 @@ void MainWindow::startFilial()
     timerRise = new QTimer(this);
     connect(timerRise, SIGNAL(timeout()),this,SLOT(editFilial()));
     timerRise->setInterval(timerMilliSeconds);
-    timerRise->start();
+//    timerRise->start();
+    qDebug() << QObject::trUtf8("Start Filial Timer");
 }
 
 
@@ -152,13 +159,13 @@ void MainWindow::getsettings()
             }
             qDebug() << "Restaurant ID:" << restId;
 
-            isAdmin = settings->value("restaurant/isAdmin").toString();
+            isAdmin = settings->value("restaurant/isAdmin").toInt();
             if(settings->value("restaurant/isAdmin").isNull()){
                 settings->setValue("restaurant/isAdmin",0);
             }
             qDebug() << "isAdmin:" << isAdmin;
 
-            isCenter = settings->value("restaurant/isCenter").toString();
+            isCenter = settings->value("restaurant/isCenter").toInt();
             if(settings->value("restaurant/isCenter").isNull()){
                 settings->setValue("restaurant/isCenter",0);
             }
@@ -188,11 +195,6 @@ void MainWindow::timerEvent(QTimerEvent *event)
 {
     if(event->timerId() == timerRise->timerId()){
             ++step;
-           if(isCenter != 0){
-              editFilial();
-           } else {
-              viewCenter();
-           }
     } else {
             QObject::timerEvent(event);
     }
