@@ -18,9 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dbcon(dataBaseName,dataBaseHost,dataBaseUserName,dataBaseUserPassword);
 
     if(isCenter == 0){
-//        startFilial();
-        connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(editFilial()));
-        editFilial();
+        startFilial();
         qDebug() << QObject::trUtf8("MainWindow Start Filial") << isCenter;
     } else {
         startCenter();
@@ -118,7 +116,7 @@ void MainWindow::startFilial()
     timerRise = new QTimer(this);
     connect(timerRise, SIGNAL(timeout()),this,SLOT(editFilial()));
     timerRise->setInterval(timerMilliSeconds);
-//    timerRise->start();
+    timerRise->start();
     qDebug() << QObject::trUtf8("Start Filial Timer");
 }
 
