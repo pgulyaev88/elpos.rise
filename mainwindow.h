@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QEvent>
 #include <QDebug>
+#include <QTranslator>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QTranslator translation;
 
 
 public slots:

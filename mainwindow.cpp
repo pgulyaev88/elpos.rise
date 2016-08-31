@@ -8,12 +8,18 @@
 #include <QFile>
 #include <QEvent>
 #include <QDebug>
+#include <QTranslator>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QTranslator translation;
+    translation.load("rise_ru_RU.qm");
+//    translation.installTranslator(&translation);
+
     getsettings();
     dbcon(dataBaseName,dataBaseHost,dataBaseUserName,dataBaseUserPassword);
 
@@ -24,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
         startCenter();
         qDebug() << QObject::trUtf8("MainWindow Start Center") << isCenter;
     }
-
-
 }
 
 MainWindow::~MainWindow()
@@ -44,13 +48,10 @@ void MainWindow::viewCenter()
     tableModel->setRelation(2,QSqlRelation("users","userid","username"));
     tableModel->select();
 
-
-
     tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
     tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
-
 
     ui->tableView->setModel(tableModel);
     ui->tableView->verticalHeader()->hide();
@@ -61,7 +62,6 @@ void MainWindow::viewCenter()
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     qDebug() << tableModel->query().lastQuery();
     qDebug() << QObject::trUtf8("Center Open UI");
-
 }
 
 void MainWindow::editFilial()
@@ -78,7 +78,6 @@ void MainWindow::editFilial()
     tableModel->setFilter(dataFilter);
     tableModel->select();
 
-
     tableModel->setHeaderData(1,Qt::Horizontal, QObject::trUtf8("Dish"));
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
@@ -92,10 +91,7 @@ void MainWindow::editFilial()
     ui->tableView->setColumnHidden(7,true);
     ui->tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
     qDebug() << tableModel->query().lastQuery();
-
     qDebug() << QObject::trUtf8("Filial Open UI");
-
-
 }
 
 void MainWindow::startCenter()
@@ -106,8 +102,6 @@ void MainWindow::startCenter()
     timerRise->setInterval(timerMilliSeconds);
     timerRise->start();
     qDebug() << QObject::trUtf8("Start Center Timer");
-
-
 }
 
 void MainWindow::startFilial()

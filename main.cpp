@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QTranslator translation;
-    translation.load("rise_ru.ts");
+    translation.load("rise_ru_RU.qm");
     if(translation.isEmpty()){
         qDebug() << QObject::trUtf8("Do not find translation file");
     }

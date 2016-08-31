@@ -21,6 +21,6 @@ FORMS    += mainwindow.ui
 
 DISTFILES += \
     SQL/base.sql \
-    rise_ru.ts
+    rise_ru_RU.ts
 
-TRANSLATIONS += rise_ru.ts
+TRANSLATIONS += rise_ru_RU.ts
