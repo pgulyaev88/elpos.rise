@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QtSql>
+#include <QMessageBox>
 #include <QTimerEvent>
 #include <QObject>
 #include <QTimer>
@@ -61,6 +62,7 @@ void MainWindow::viewCenter()
     ui->tableView->setColumnHidden(7,true);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     qDebug() << tableModel->query().lastQuery();
+
     qDebug() << QObject::trUtf8("Center Open UI");
 }
 
@@ -180,6 +182,9 @@ void MainWindow::dbcon(QString dataBaseName, QString dataBaseHost, QString dataB
             db.setPassword(dataBaseUserPassword);
             if (!db.open()){
                 qDebug() << QObject::trUtf8("Database error connect") << db.lastError().text();
+                QMessageBox messagebox;
+                messagebox.setText(db.lastError().text());
+                messagebox.exec();
             }
 }
 

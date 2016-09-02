@@ -11,6 +11,7 @@
 #include <QEvent>
 #include <QDebug>
 #include <QTranslator>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QTranslator translation;
+    QMessageBox messagebox;
+
 
 
 public slots:
