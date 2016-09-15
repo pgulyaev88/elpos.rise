@@ -74,7 +74,7 @@
       <property name="font">
        <font>
         <family>Calibri</family>
-        <pointsize>11</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
         <stylestrategy>PreferAntialias</stylestrategy>

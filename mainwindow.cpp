@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    MainWindow::showMaximized();
     QTranslator translation;
     translation.load("rise_ru_RU.qm");
 //    translation.installTranslator(&translation);
@@ -40,6 +40,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::viewCenter()
 {
+    QFont*	font	= new QFont("Courier New",32);
     QSqlDatabase::database();
     QSqlRelationalTableModel *tableModel = new QSqlRelationalTableModel;
     tableModel->setTable("rise");
@@ -53,6 +54,9 @@ void MainWindow::viewCenter()
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
     tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
+    QString dataFilter = QString("%1").arg("rise.archive=false");
+    tableModel->setFilter(dataFilter);
+    tableModel->select();
 
     ui->tableView->setModel(tableModel);
     ui->tableView->verticalHeader()->hide();
@@ -60,7 +64,9 @@ void MainWindow::viewCenter()
     ui->tableView->setColumnHidden(4,true);
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
+    ui->tableView->setFont(*font);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableView->resizeColumnsToContents();
     qDebug() << tableModel->query().lastQuery();
 
     qDebug() << QObject::trUtf8("Center Open UI");
