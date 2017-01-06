@@ -231,3 +231,25 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
+-- Function: t_function_count_update()
+
+-- DROP FUNCTION t_function_count_update();
+
+CREATE OR REPLACE FUNCTION t_function_orders_update()
+  RETURNS trigger AS
+$BODY$DECLARE
+querys varchar(255);
+
+BEGIN
+IF TG_OP = 'UPDATE' THEN
+UPDATE rise SET lastupdate=NOW();
+INSERT INTO rise(riseid, menuid, userid, count, archive, archivedatetime, lastupdate,deleted,orders,archiveorders)
+    VALUES (nextval('"rise_riseid_seq"'::regclass), OLD.menuid, OLD.userid, OLD.count, true, NOW(),NULL,false,OLD.orders,true);
+RETURN NEW;
+END IF;
+END;$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION t_function_orders_update()
+  OWNER TO rise;

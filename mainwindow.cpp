@@ -54,16 +54,19 @@ void MainWindow::viewCenter()
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
     tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
+    tableModel->setHeaderData(8,Qt::Horizontal, QObject::trUtf8("Orders"));
     QString dataFilter = QString("%1").arg("rise.archive=false");
     tableModel->setFilter(dataFilter);
     tableModel->select();
 
     ui->tableView->setModel(tableModel);
     ui->tableView->verticalHeader()->hide();
+    ui->tableView->horizontalHeader()->moveSection(8,5);
     ui->tableView->setColumnHidden(0,true);
     ui->tableView->setColumnHidden(4,true);
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
+    ui->tableView->setColumnHidden(9,true);
     ui->tableView->setFont(*font);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->resizeColumnsToContents();
@@ -90,13 +93,16 @@ void MainWindow::editFilial()
     tableModel->setHeaderData(2,Qt::Horizontal, QObject::trUtf8("Resuarant"));
     tableModel->setHeaderData(3,Qt::Horizontal, QObject::trUtf8("Count"));
     tableModel->setHeaderData(6,Qt::Horizontal, QObject::trUtf8("Last Update"));
+    tableModel->setHeaderData(8,Qt::Horizontal, QObject::trUtf8("Orders"));
 
     ui->tableView->setModel(tableModel);
     ui->tableView->verticalHeader()->hide();
+    ui->tableView->horizontalHeader()->moveSection(8,5);
     ui->tableView->setColumnHidden(0,true);
     ui->tableView->setColumnHidden(4,true);
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(7,true);
+    ui->tableView->setColumnHidden(9,true);
     ui->tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
     qDebug() << tableModel->query().lastQuery();
     qDebug() << QObject::trUtf8("Filial Open UI");
